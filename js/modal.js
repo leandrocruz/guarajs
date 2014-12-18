@@ -5,7 +5,8 @@ define(function (require) {
 		module_name: 'guara/modal',
 
 		create: function(options, data, callback) {
-			return {};			
+			console.warn('Creating modal', options, data, callback);
+			return {};
 		},
 
 		message: function(message, title, classes) {
