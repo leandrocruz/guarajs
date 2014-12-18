@@ -1,0 +1,8 @@
+@import "../guara.css";
+
+g-tooltip,
+#cell {
+	min-height: 20px;
+	width: 100%;
+	height: 100%;
+}

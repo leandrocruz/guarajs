@@ -1,0 +1,14 @@
+<script src="../../js-xls/xls.js"></script>
+<script src="../../js-xlsx/xlsx.js"></script>
+
+<polymer-element name="g-excel" attributes="pageSize debug">
+	<template>
+		<link rel="stylesheet" href="g-excel.css">
+		<g-table id="table" pageSize="{{ pageSize }}"></g-table>
+	</template>
+	<script>
+		require(['gl!bower/guara/g-excel/g-excel.js'], function (module) {
+			Polymer('g-excel', module);
+		});
+	</script>
+</polymer-element>

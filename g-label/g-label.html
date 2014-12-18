@@ -1,0 +1,41 @@
+<polymer-element name="g-label" attributes="type">
+	<template>
+		<link rel="stylesheet" href="g-label.css">
+		<span id="label" class="label label-{{ type }} {{ state }}"><content></content></span>
+	</template>
+	<script>
+    	Polymer('g-label', {
+
+    		type: "warning",
+    		state: "show",
+    		
+			attached: function () {
+				var content = this.innerHTML;
+				content = $.trim(content);
+				if(content != "")
+				{
+					this.state = "show";
+				}
+			},
+    		
+			clear: function() {
+				this.state     = "hide";
+				this.type      = "warning";
+				this.innerHTML = "";
+			},
+			
+			set: function(html, type) {
+				this.innerHTML = html;
+				if(type)
+				{
+					this.type = type;
+				}
+				this.state = "show";
+			},
+			
+    		closeAlert: function(event, detail, sender) {
+    			this.clear();
+    		}
+    	});
+	</script>
+</polymer-element>

@@ -1,0 +1,29 @@
+<polymer-element name="g-hmenu" attributes="items">
+	<template>
+		<link rel="stylesheet" href="g-hmenu.css">
+		<ul id="menu" class="nav nav-pills">
+			<template repeat="{{item, i in items}}">
+ 				<li class="{{item.class}}">
+					<a href="{{item.href}}" data-index="{{i}}">{{item.text}}</a>
+ 				</li>
+			</template>				
+		</ul>
+	</template>
+	<script>
+    	Polymer('g-hmenu', {
+    		created: function() {
+				this.items = [];
+			},
+    		
+    		hide: function() {
+    			var menu = $(this.$.menu);
+    			menu.addClass('hide');
+    		},
+
+    		show: function() {
+    			var menu = $(this.$.menu);
+    			menu.removeClass('hide');
+    		},
+    	});
+	</script>
+</polymer-element>

@@ -1,0 +1,132 @@
+<polymer-element name="g-file" attributes="title class accept isDirectory multiple onChange sample">
+	<template>
+		<link rel="stylesheet" href="g-file.css">
+
+		<template if="{{ sample }}">
+			<div class="input-group sample">
+				<span class="input-group-addon">
+					<a href="{{ sample }}">
+						<span class="glyphicon glyphicon-download">
+					</a>
+					</span>
+				</span>
+				<a 	id="button" 
+					class="btn btn-default {{class}}"
+					style="width: 100%"
+					on-click="{{ triggerFileSelect }}">
+					{{title}}
+				</a>
+			</div>
+		</template>
+
+		<template if="{{ !sample }}">
+			<a id="button" on-click="{{ triggerFileSelect }}" class="btn btn-default {{class}}" style="width: 100%">
+				{{title}}
+			</a>
+		</template>
+
+		<input 	id="file"
+				type="file"
+				class="hidden"
+				on-change="{{ onFileSelected }}" title="{{title}}" accept="{{ accept ? accep : '*' }}" 
+				multiple?="{{ multiple }}"
+				webkitdirectory?="{{ isDirectory }}"
+				directory?="{{ isDirectory }}" />
+	</template>
+	<script>
+    	Polymer('g-file', {
+
+    		isDirectory: false,
+    		multiple: false,
+    		
+    		attached: function() {
+    			this.$.button.addEventListener('dragenter', this.onDragEnter, false);
+    			this.$.button.addEventListener('dragleave', this.onDragLeave, false);
+    		},
+    		
+    		disable: function() {
+    			this.$.button.setAttribute('disabled', 'true');
+    		},
+    		
+    		getInput: function() {
+    			return $(this.$.file);
+    		},
+
+    		getFiles: function(pos) {
+    			var input = this.getInput();
+    			var files = input.prop('files');
+    			if(pos !== undefined)
+    			{
+    				return files[pos];	
+    			}
+    			return files;
+    		},
+    		
+    		readFile: function(pos, whenReady) {
+    			var file   = this.getFiles(pos);
+                this.encode(file, whenReady);
+    		},
+    		
+    		encode: function(file, whenReady) {
+    			var reader = new FileReader();
+    			reader.onloadend = function(e) {
+    				var base64  = btoa(e.target.result);
+    				whenReady(file, base64);
+				};
+    			reader.readAsBinaryString(file);
+    		},
+    		
+    		getFileName: function(name) {
+    			var idx = name.lastIndexOf('\\');
+    			return name.substring(idx + 1, name.length);	
+    		},
+
+    		/* 
+    		 * Events 
+    		*/
+    		triggerFileSelect: function() {
+    			this.getInput().trigger('click');
+    		},
+    		
+    		clear: function() {
+    			/*
+    			 * See: http://css-tricks.com/snippets/jquery/clear-a-file-input/
+    			 */
+    			var input = this.getInput();
+    			input.val('');
+    			this.onFileSelected();
+    		},
+
+    		onFileSelected: function() {
+    			
+				var label = this.title;
+				var files  = this.getFiles();
+				if(files.length > 0)
+				{
+					if(files.length == 1)
+					{
+						var file = files[0];
+						var size = new Number(file.size / 1024).toFixed(2);
+						label = file.name + " - " + size + " KB";
+					}
+					else
+					{
+						label = files.length + " arquivo(s)";
+					}
+				}
+
+				$(this.$.button).text(label);
+				$g.utils.apply(this.onChange, this.isDirectory ? [files] : files);
+				//this.fire('file-selected', {files : files});
+			},
+			
+			onDragEnter: function(evt, detail, sender) {
+				console.log("DRAG ENTER");
+			},
+			
+			onDragLeave: function(evt, detail, sender) {
+				console.log("DRAG LEAVE");
+			},
+		});
+	</script>
+</polymer-element>

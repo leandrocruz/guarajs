@@ -1,0 +1,86 @@
+<polymer-element name="g-form" extends="g-base" attributes="orientation fields onSubmit">
+	<template>
+		<link rel="stylesheet" href="g-form.css">
+		<form id="form" class="form-{{ orientation }}">
+			<template repeat="{{ field, i in fields }}">
+				<g-input id="{{ field.id }}" form="{{ me }}" field="{{ field }}"></g-input>
+			</template>
+		</form>
+	</template>
+	<script>
+	
+    	Polymer('g-form', {
+    		
+    		orientation : 'horizontal',
+    		fields      : [],
+    		onSubmit    : null,
+    		
+    		get me () {
+    			return this;	
+    		},
+    		
+    		valueOf: function(id) {
+    			return this.toInput(id).value();
+    		},
+
+    		fieldById: function(id) {
+				var result = null;
+    			$.each(this.fields, function(idx, field){
+    				if(field.id == id)
+    				{
+    					result = field;
+    					return;
+    				}
+    			});
+				return result;
+    		},
+    		
+    		
+    		toInput: function(key) {
+    			if(typeof key === 'object')
+    			{
+    				key = key.id;
+    			}
+				return this.select('#' + key);
+    		},
+    		
+    		isValid: function() {
+				var valid = true;
+				var $this = this;
+				$.each(this.fields, function(idx, field){
+					if(field.id)
+					{
+						/* Ignores spacers and other controls */ 
+						var input  = $this.toInput(field);
+						var status = input.validate();
+	        			valid = valid && status.isValid;
+	        			input.highlight();
+					}
+    			});
+    			return valid;
+    		},
+    		
+    		toBean: function() {
+				var result = {};
+				var $this  = this;
+    			$.each(this.fields, function(idx, field){
+					if(field.id)
+					{
+						/* Ignores spacers and other controls */ 
+	    				var input = $this.toInput(field);
+	    				result[field.id] = input.value();
+					}
+    			});
+    			return result;
+    		},
+    		
+    		submit: function(ctx, field, evt, detail, sender) {
+    			if(this.onSubmit)
+    			{
+    				evt.preventDefault();
+	    			this.onSubmit.apply(ctx, [this, field, evt, detail, sender]);
+    			}
+    		}
+    	});
+	</script>
+</polymer-element>
