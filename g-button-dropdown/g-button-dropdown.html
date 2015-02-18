@@ -1,8 +1,8 @@
-<polymer-element name="g-button-dropdown" attributes="label options type" >
+<polymer-element name="g-button-dropdown" attributes="label options type width" >
 	<template>
 		<link rel="stylesheet" href="g-button-dropdown.css">
 		<div id="container" class="btn-group">
-			<button on-click="{{ toggleOpen }}" type="button" class="btn btn-{{ type }} dropdown-toggle">
+			<button on-click="{{ toggleOpen }}" type="button" style="width: {{ width }}" class="btn btn-{{ type }} dropdown-toggle">
 				{{ label }} <span class="caret"></span>
 			</button>
 			<ul class="dropdown-menu">
@@ -20,8 +20,9 @@
 	<script>
     	Polymer('g-button-dropdown', {
     		
-    		type   : "default",
+    		type    : "default",
     		options : [],
+    		width   : null,
     		
 			toggleOpen: function(event, detail, sender) {
 				$(this.$.container).toggleClass("open");
@@ -36,6 +37,7 @@
 				 */
 				var idx = $(sender).data('idx');
 				var op  = this.options[idx];
+				this.label = op.label;
 				if(op.onClick)
 				{
 					op.onClick();

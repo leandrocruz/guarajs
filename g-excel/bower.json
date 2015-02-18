@@ -1,0 +1,20 @@
+{
+  "name": "g-excel",
+  "version": "1.0.0",
+  "authors": [
+    "Leandro Cruz <leandro.saad@gmail.com>"
+  ],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "bower",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "guara": "~1.0.0",
+    "js-xls": "~0.7.0",
+    "js-xlsx": "~0.7.0"
+  }
+}

@@ -1,0 +1,21 @@
+<polymer-element name="g-breadcrub" attributes="">
+	<template>
+		<link rel="stylesheet" href="g-breadcrub.css">
+		<ol class="breadcrumb">
+			<template repeat="{{ p in parts }}">
+				<li><a href="#">{{ p }}</a></li>
+			</template>
+		</ol>
+	</template>
+	<script>
+    	Polymer({
+    		created: function() {
+    			var $this = this;
+    			window.onhashchange = function() {
+    				var hash = window.location.hash;
+    				$this.parts = hash.split('/');
+    			};
+    		}
+    	});
+	</script>
+</polymer-element>

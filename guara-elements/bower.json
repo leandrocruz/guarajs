@@ -1,0 +1,38 @@
+{
+  "name": "guara-elements",
+  "version": "1.0.0",
+  "authors": [
+    "Leandro Cruz <leandro.saad@gmail.com>"
+  ],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "bower",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+	"g-base": "~1.0.0",
+	"g-alert": "~1.0.0",
+	"g-button": "~1.0.0",
+	"g-button-dropdown": "~1.0.0",
+	"g-cell": "~1.0.0",
+	"g-date": "~1.0.0",
+	"g-dropdown": "~1.0.0",
+	"g-excel": "~1.0.0",
+	"g-file": "~1.0.0",
+	"g-form": "~1.0.0",
+	"g-hmenu": "~1.0.0",
+	"g-icon": "~1.0.0",
+	"g-input": "~1.0.0",
+	"g-label": "~1.0.0",
+	"g-menu": "~1.0.0",
+	"g-progress": "~1.0.0",
+	"g-remote-file": "~1.0.0",
+	"g-spin-circle": "~1.0.0",
+	"g-spinner": "~1.0.0",
+	"g-table": "~1.0.0",
+	"g-tooltip": "~1.0.0"
+  }
+}

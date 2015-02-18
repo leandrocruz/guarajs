@@ -16,17 +16,14 @@
 			<table id="table" class="table table-hover" on-click="{{ whenClicked }}" on-mouseover="{{ whenMouseOver }}" on-mouseout="{{ whenMouseOut }}">
 				<thead>
 					<tr>
-
 						<template if="{{ lineCount }}">
 							<th>#</th>
 						</template>
-						
 						<template if="{{ enableRowSelection }}">
 							<th>
-							<span class="glyphicon glyphicon-pushpin" style="font-size:80%;" on-click="{{  selectAll }}"></span>
+								<span class="glyphicon glyphicon-pushpin" style="font-size:80%;" on-click="{{ selectAll }}"></span>
 							</th>
 						</template>
-						
 						<template repeat="{{ column, j in columns }}">
 							<template if="{{ column.name | include }}">
 								<template if="{{ column.length }}">
@@ -37,13 +34,12 @@
 								</template>
 							</template>
 						</template>
-
 					</tr>
 				</thead>
 				<tfoot></tfoot>
 				<tbody>
 					<template repeat="{{ row, i in buffer }}">
-
+					
 						<tr class="{{ (row.error ? 'danger' : 'noerror') }}" >
 
 							<template if="{{ lineCount }}">
@@ -84,8 +80,12 @@
 												<g-dropdown label="Ações" options="{{ column.options }}" type="primary"></g-dropdown>
 											</template>
 											<template if="{{ column.type == 'button' }}">
-												<template repeat="{{ option in  column.options }}">
-													<g-button label="{{ option.label }}" type="{{ option.type }}" href="{{ option.href }}"></g-button>
+												<template bind="{{ row.data[column.name].value }}">
+													<template repeat>
+														<g-button	label="{{ label }}"
+																	type="{{ type }}"
+																	onClick="{{ onClick }}" ></g-button>
+													</template>
 												</template>
 											</template>
 										</td>
@@ -217,6 +217,8 @@
 
     		toRowData: function(raw) {
 
+    			console.log(raw);
+
     			var $this    = this;
     			var rowData  = {rowError: false};
     			
@@ -240,7 +242,8 @@
     				rowData[name] = {
    						value  : value,
    						error  : error,
-   						issues : issues
+   						show   : true,
+   						issues : issues,
    					};
     			});
     			
@@ -252,9 +255,11 @@
     			var rowData = this.toRowData(raw);
 
     			var entry = {
-					index : index,
-					data  : rowData,
-    				error : rowData.rowError
+					index    : index,
+					data     : rowData,
+    				error    : raw.options ? raw.options.error || rowData.rowError : rowData.rowError,
+    				disabled : raw.options ? raw.options.disabled : false,
+    			
     			};
 
     			this.rows.push(entry);
@@ -307,7 +312,10 @@
     			for (var i = 0; i < view.length; i++)
     			{
     				var row = view[i];
-    				row.selected = select;
+    				if(!row.disabled)
+    				{
+	    				row.selected = select;
+    				}
     			}
     		},
     		
@@ -380,6 +388,11 @@
     			this.clearSelectedRows();
     			this.selection = null;
     			this.show();
+    		},
+    		
+    		_handleActionClick: function(e, detail, sender) {
+				var model = e.target.templateInstance.model;
+				console.log("Clicked ", model);
     		}
     	});
 	</script>

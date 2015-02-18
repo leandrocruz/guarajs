@@ -1,1 +1,7 @@
-@import "../guara.css";
+@import "../guara/guara.css";
+
+:host {
+	display: inline;
+	margin: 0;
+	padding: 0;
+}
